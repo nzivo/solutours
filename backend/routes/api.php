@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\v1\AuthController;
 use App\Http\Controllers\API\v1\BookingsController;
 use App\Http\Controllers\API\v1\DestinationController;
+use App\Http\Controllers\API\v1\TicketsController;
 use App\Http\Controllers\API\v1\TourController;
 use App\Http\Controllers\API\v1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,9 @@ Route::group(['middleware' => ['auth:api'],
     // Tour booking
     Route::post('/book-tour', [BookingsController::class, 'bookTour']);
 
+    // Ticket generation and viewing
+    Route::post('/generate-ticket', [TicketsController::class, 'generateTicket']);
+    Route::get('/view-ticket/{booking_id}', [TicketsController::class, 'viewTicket']);
 });
 
 Route::group([

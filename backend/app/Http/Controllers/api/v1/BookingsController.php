@@ -11,6 +11,33 @@ use Illuminate\Support\Facades\Auth;
 class BookingsController extends Controller
 {
     /**
+     * Get all Bookings by admin.
+     */
+    public function getBookings(){
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to view all bookings.'], 403);
+        }
+
+        // Retrieve all bookings with related user, tour, and destination details
+        $bookings = Bookings::with(['user', 'tour.destination'])->get();
+
+        return response()->json($bookings);
+    }
+
+    /**
+     * returns active user bookings.
+     */
+    public function getMyBookings(){
+        // Retrieve the authenticated user's bookings with related tour and destination details
+        $bookings = Bookings::where('user_id', Auth::id())
+            ->with(['tour.destination']) // Eager load the related tour and destination
+            ->get();
+
+        return response()->json($bookings);
+    }
+
+    /**
      * Book a tour.
      *
      * @param \Illuminate\Http\Request $request
@@ -51,5 +78,35 @@ class BookingsController extends Controller
             'booking_id' => $booking->id,
             'status' => $booking->status,
         ], 201);
+    }
+
+    /*
+        A function to confirm a tour booking
+        accepts only booking_id
+    */
+    public function confirmBooking($booking_id)
+    {
+        // Find the booking
+        $booking = Bookings::find($booking_id);
+
+        if (!$booking) {
+            return response()->json(['message' => 'Booking not found.'], 404);
+        }
+
+        // Check if the authenticated user is the one who made the booking or is an admin
+        if ($booking->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to confirm this booking.'], 403);
+        }
+
+        // Check if the booking is already confirmed
+        if ($booking->status === Bookings::STATUS_CONFIRMED) {
+            return response()->json(['message' => 'Booking is already confirmed.'], 400);
+        }
+
+        // Confirm the booking
+        $booking->status = Bookings::STATUS_CONFIRMED;
+        $booking->save();
+
+        return response()->json(['message' => 'Booking confirmed successfully!', 'status' => $booking->status], 200);
     }
 }

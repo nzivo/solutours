@@ -18,4 +18,18 @@ class Bookings extends Model
         'tour_id',
         'status',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function tour()
+    {
+        return $this->belongsTo(Tours::class);
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Tickets::class);
+    }
 }

@@ -9,36 +9,52 @@ use App\Http\Controllers\API\v1\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function ($router) {
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::group(['middleware' => ['auth:api'],
+    'prefix' => 'v1'], function () {
+    // Auth
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
     Route::post('/me', [AuthController::class, 'me'])->middleware('auth:api')->name('me');
-});
 
-Route::group(['middleware' => ['auth:api'],
-    'prefix' => 'v1'], function () {
     // Tour booking
+    Route::get('/bookings', [BookingsController::class, 'getBookings']);
+    Route::get('/my-bookings', [BookingsController::class, 'getMyBookings']);
     Route::post('/book-tour', [BookingsController::class, 'bookTour']);
+    Route::post('/confirm-booking/{booking_id}', [BookingsController::class, 'confirmBooking']);
 
     // Ticket generation and viewing
+    Route::get('/get-all-tickets',[TicketsController::class, 'getAllTickets']);
+    Route::get('/get-my-tickets',[TicketsController::class, 'getMyTickets']);
     Route::post('/generate-ticket', [TicketsController::class, 'generateTicket']);
     Route::get('/view-ticket/{booking_id}', [TicketsController::class, 'viewTicket']);
+
+    // CRUD destinations
+    Route::post('destinations', [DestinationController::class, 'store']);
+    Route::put('destinations/{destination}', [DestinationController::class, 'update']);
+    Route::delete('destinations/{destination}', [DestinationController::class, 'destroy']);
+
+    // CRUD Tours
+    Route::post('tours', [TourController::class, 'store']);
+    Route::put('tours/{tour}', [TourController::class, 'update']);
+    Route::delete('tours/{tour}', [TourController::class, 'destroy']);
+
+    // CRUD users
+    Route::apiResource('users', UserController::class);
+
 });
 
+// Unauthenticated endpoints
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'v1'
 ], function ($router) {
 
-    Route::apiResource('destinations', DestinationController::class);
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-    Route::apiResource('tours', TourController::class);
+    Route::get('destinations', [DestinationController::class, 'index']);
+    Route::get('destinations/{destination}', [DestinationController::class, 'show']);
 
-    Route::apiResource('users', UserController::class);
+    Route::get('tours', [TourController::class,'index']);
+    Route::get('tours/{tour}', [TourController::class, 'show']);
 });
 

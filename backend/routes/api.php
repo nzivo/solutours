@@ -1,14 +1,32 @@
 <?php
 
+use App\Http\Controllers\API\v1\AuthController;
 use App\Http\Controllers\API\v1\DestinationController;
 use App\Http\Controllers\API\v1\TourController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\v1\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
 
-Route::apiResource('destinations', DestinationController::class);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
+    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api')->name('refresh');
+    Route::post('/me', [AuthController::class, 'me'])->middleware('auth:api')->name('me');
+});
 
-Route::apiResource('tours', TourController::class);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'v1'
+], function ($router) {
+
+    Route::apiResource('destinations', DestinationController::class);
+
+    Route::apiResource('tours', TourController::class);
+
+    Route::apiResource('users', UserController::class);
+});
+

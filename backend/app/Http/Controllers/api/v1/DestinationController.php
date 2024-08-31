@@ -32,14 +32,6 @@ class DestinationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -66,18 +58,15 @@ class DestinationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        $destination = Destination::findOrFail($id);
-        return response()->json($destination, 200);
-    }
+        $destination = Destination::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        if (!$destination) {
+            return response()->json(['message' => config('constants.DESTINATION_NOT_FOUND')], 404);
+        }
+
+        return response()->json($destination);
     }
 
     /**
@@ -110,8 +99,13 @@ class DestinationController extends Controller
      */
     public function destroy(string $id)
     {
+        $destination = Destination::find($id);
+
+        if (!$destination) {
+            return response()->json(['message' => config('constants.DESTINATION_NOT_FOUND')], 404);
+        }
         $destination = Destination::findOrFail($id);
         $destination->delete();
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Destination deleted successfully!'], 200);
     }
 }

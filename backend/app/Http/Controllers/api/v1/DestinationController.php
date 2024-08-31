@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Destination;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DestinationController extends Controller
 {
@@ -36,6 +37,10 @@ class DestinationController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to create a destination.'], 403);
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|regex:/^[a-zA-Z0-9_-]+$/',
@@ -74,6 +79,10 @@ class DestinationController extends Controller
      */
     public function update(Request $request, Destination $destination)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to update a destination.'], 403);
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|regex:/^[a-zA-Z0-9_-]+$/',
@@ -99,6 +108,10 @@ class DestinationController extends Controller
      */
     public function destroy(string $id)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to delete a destination.'], 403);
+        }
         $destination = Destination::find($id);
 
         if (!$destination) {

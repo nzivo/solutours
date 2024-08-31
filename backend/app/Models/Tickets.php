@@ -13,4 +13,9 @@ class Tickets extends Model
         'booking_id',
         'ticket_number',
     ];
+
+    public function booking()
+    {
+        return $this->belongsTo(Bookings::class);
+    }
 }

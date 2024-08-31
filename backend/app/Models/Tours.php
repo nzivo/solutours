@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tours extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'destination_id',
         'name',
@@ -15,4 +16,9 @@ class Tours extends Model
         'price',
         'slots'
     ];
+
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class);
+    }
 }

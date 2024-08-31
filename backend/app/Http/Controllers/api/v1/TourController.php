@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class TourController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
@@ -56,32 +55,35 @@ class TourController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tours $tour)
+    public function update(Request $request, $id)
     {
-        $tour = Tours::find($tour);
-
-        if (!$tour) {
-            return response()->json(['message' => config('constants.TOUR_NOT_FOUND')], 404);
-        }
         // Validate the request
         $request->validate([
-            'destination_id' => 'required|exists:destination,id',
+            'destination_id' => 'required|exists:destination,id', // Ensure the table name is correct
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'slots' => 'required|integer|min:1',
         ]);
 
-        // Update the tour
-        $tour->name = $request->name;
-        $tour->description = $request->description;
-        $tour->price = $request->price;
-        $tour->slots = $request->slots;
-        $tour->destination_id = $request->destination_id;
+        // Find the tour by ID
+        $tour = Tours::find($id);
+
+        if (!$tour) {
+            return response()->json(['message' => config('constants.TOUR_NOT_FOUND')], 404);
+        }
+
+        // Update the tour with validated data
+        $tour->name = $request->input('name');
+        $tour->description = $request->input('description');
+        $tour->price = $request->input('price');
+        $tour->slots = $request->input('slots');
+        $tour->destination_id = $request->input('destination_id');
         $tour->save();
 
         return response()->json(['message' => 'Tour updated successfully!'], 200);
     }
+
 
     /**
      * Remove the specified resource from storage.

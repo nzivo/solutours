@@ -1,11 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\v1\DestinationController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\API\v1\TourController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::post('login', [LoginController::class, 'index']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -13,3 +11,4 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('destinations', DestinationController::class);
 
+Route::apiResource('tours', TourController::class);

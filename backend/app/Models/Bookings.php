@@ -30,6 +30,6 @@ class Bookings extends Model
 
     public function tickets()
     {
-        return $this->hasMany(Tickets::class);
+        return $this->hasMany(Tickets::class, 'booking_id'); // Ensure the foreign key is correct
     }
 }

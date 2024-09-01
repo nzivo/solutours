@@ -80,6 +80,7 @@ class TicketsController extends Controller
         return response()->json([
             'message' => 'Ticket generated successfully!',
             'ticket_number' => $ticket->ticket_number,
+            'id' =>  $ticket->id,
         ], 201);
     }
 

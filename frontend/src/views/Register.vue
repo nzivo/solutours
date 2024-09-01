@@ -1,15 +1,21 @@
 <template lang="">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img
-      class="mx-auto h-10 w-auto"
-      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-      alt="Your Company"
-    />
+    <router-link :to="{ name: 'home' }">
+      <img
+        class="mx-auto h-10 w-auto"
+        src="/public/vite.svg"
+        alt="Your Company"
+    /></router-link>
     <h2
-      class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+      class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+    >
+      Solutours
+    </h2>
+    <h4
+      class="mt-10 text-center text-[24px] font-bold leading-3 tracking-tight text-gray-900"
     >
       Register your account
-    </h2>
+    </h4>
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">

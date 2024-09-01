@@ -29,9 +29,9 @@ class BookingsController extends Controller
      * returns active user bookings.
      */
     public function getMyBookings(){
-        // Retrieve the authenticated user's bookings with related tour and destination details
+        // Retrieve the authenticated user's bookings with related tour, destination, and tickets
         $bookings = Bookings::where('user_id', Auth::id())
-            ->with(['tour.destination']) // Eager load the related tour and destination
+            ->with(['tour.destination', 'tickets']) // Eager load related tour, destination, and tickets
             ->get();
 
         return response()->json($bookings);

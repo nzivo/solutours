@@ -14,7 +14,7 @@ class TourController extends Controller
      */
     public function index()
     {
-        $tours = Tours::all();
+        $tours = Tours::with('destination')->get();
         return response()->json($tours);
     }
 

@@ -1,16 +1,15 @@
 <template>
   <div class="min-h-full">
-    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-gray-100" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
+            <!-- SVG Image -->
             <div class="flex-shrink-0">
-              <img
-                class="h-8 w-8"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
-              />
+              <img class="h-8 w-8" src="/public/vite.svg" alt="Your Company" />
             </div>
+            <!-- Text Next to Image -->
+            <span class="ml-2 text-[26px] font-bold">Solutours</span>
           </div>
 
           <!-- md links -->
@@ -24,7 +23,7 @@
                 :class="[
                   item.current === item.to.name
                     ? ''
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    : 'text-gray-500 hover:bg-gray-700 hover:text-white',
                   'rounded-md px-3 py-2 text-sm font-medium',
                 ]"
                 >{{ item.name }}</router-link
@@ -52,7 +51,7 @@
                     <span class="sr-only">Open user menu</span>
                     <img
                       class="h-8 w-8 rounded-full"
-                      :src="user.imageUrl"
+                      src="/public/vite.svg"
                       alt=""
                     />
                   </MenuButton>
@@ -127,7 +126,7 @@
             :class="[
               item.current === item.to.name
                 ? ''
-                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                : 'text-gray-500 hover:bg-gray-700 hover:text-white',
               'block rounded-md px-3 py-2 text-base font-medium',
             ]"
             >{{ item.name }}</router-link
@@ -136,7 +135,11 @@
         <div class="border-t border-gray-700 pb-3 pt-4">
           <div class="flex items-center px-5">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
+              <img
+                class="h-10 w-10 rounded-full"
+                src="/public/vite.svg"
+                alt=""
+              />
             </div>
             <div class="ml-3">
               <div class="text-base font-medium leading-none text-white">
@@ -196,6 +199,7 @@ const user = computed(() => store.state.user.data);
 const navigation = [
   { name: "tours", to: { name: "tours" } },
   { name: "destinations", to: { name: "destinations" } },
+  { name: "bookings", to: { name: "bookings" } },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },

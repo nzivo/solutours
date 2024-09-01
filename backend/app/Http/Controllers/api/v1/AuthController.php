@@ -37,9 +37,20 @@ class AuthController extends Controller
         $user->password = bcrypt(request()->password); // Encrypt the password
         $user->save(); // Save the user to the database
 
-        // Return the created user with a 201 status code
-        return response()->json($user, 201);
+        // Automatically log in the user and generate a token
+        if (! $token = auth('api')->attempt(request(['email', 'password']))) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Return the user details and the token
+        return response()->json([
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60, // Token lifetime in seconds
+        ], 201);
     }
+
 
     /**
      * Authenticate a user and return a JWT token.
@@ -127,7 +138,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60 // Token lifetime in seconds
+            'expires_in' => JWTAuth::factory()->getTTL() * 60, // Token lifetime in seconds
+            'user' => auth('api')->user(),
         ]);
     }
 }

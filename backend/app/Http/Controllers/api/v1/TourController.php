@@ -5,10 +5,10 @@ namespace App\Http\Controllers\API\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Tours;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TourController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
@@ -19,10 +19,14 @@ class TourController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Admin only can Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to create a tour.'], 403);
+        }
         // Validate the request
         $request->validate([
             'destination_id' => 'required|exists:destination,id',
@@ -54,40 +58,51 @@ class TourController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Admin only can Update the specified resource in storage.
      */
-    public function update(Request $request, Tours $tour)
+    public function update(Request $request, $id)
     {
-        $tour = Tours::find($tour);
-
-        if (!$tour) {
-            return response()->json(['message' => config('constants.TOUR_NOT_FOUND')], 404);
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to update a tour.'], 403);
         }
         // Validate the request
         $request->validate([
-            'destination_id' => 'required|exists:destination,id',
+            'destination_id' => 'required|exists:destination,id', // Ensure the table name is correct
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'slots' => 'required|integer|min:1',
         ]);
 
-        // Update the tour
-        $tour->name = $request->name;
-        $tour->description = $request->description;
-        $tour->price = $request->price;
-        $tour->slots = $request->slots;
-        $tour->destination_id = $request->destination_id;
+        // Find the tour by ID
+        $tour = Tours::find($id);
+
+        if (!$tour) {
+            return response()->json(['message' => config('constants.TOUR_NOT_FOUND')], 404);
+        }
+
+        // Update the tour with validated data
+        $tour->name = $request->input('name');
+        $tour->description = $request->input('description');
+        $tour->price = $request->input('price');
+        $tour->slots = $request->input('slots');
+        $tour->destination_id = $request->input('destination_id');
         $tour->save();
 
         return response()->json(['message' => 'Tour updated successfully!'], 200);
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Admin only can Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to delete a tour.'], 403);
+        }
         $tour = Tours::find($id);
 
         if (!$tour) {

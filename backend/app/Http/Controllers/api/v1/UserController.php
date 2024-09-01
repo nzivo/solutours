@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -13,6 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to view users.'], 403);
+        }
         $users = User::all();
         return response()->json($users);
     }
@@ -22,6 +27,10 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to view a user.'], 403);
+        }
         $user = User::find($id);
 
         if (!$user) {
@@ -36,6 +45,10 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to assign user role.'], 403);
+        }
         // Validate the request
         $request->validate([
             'role' => 'required|string|in:admin,user',
@@ -61,6 +74,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        // Check if the authenticated user is an admin
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['message' => 'You do not have permission to delete a user.'], 403);
+        }
         $user = User::find($id);
 
         if (!$user) {

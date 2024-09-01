@@ -176,12 +176,13 @@
             </button>
           </div>
           <div v-else>
-            <button
-              class="my-4 px-4 py-2 w-full bg-indigo-500 text-white rounded hover:bg-indigo-600 self-center"
-              @click="bookTour(tour.id)"
+            <router-link :to="{ name: 'login' }">
+              <button
+                class="my-4 px-4 py-2 w-full bg-indigo-500 text-white rounded hover:bg-indigo-600 self-center"
+              >
+                Book Tour
+              </button></router-link
             >
-              Book Tour
-            </button>
           </div>
         </div>
       </div>

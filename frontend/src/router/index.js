@@ -5,6 +5,8 @@ import Home from "../views/Home.vue";
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import store from "../store";
 import AuthLayout from "../layouts/AuthLayout.vue";
+import Destinations from "../views/Destinations.vue";
+import Tours from "../views/Tours.vue";
 const routes = [
   {
     path: "/",
@@ -16,6 +18,16 @@ const routes = [
         path: "/home",
         name: "home",
         component: Home,
+      },
+      {
+        path: "/tours",
+        name: "tours",
+        component: Tours,
+      },
+      {
+        path: "/destinations",
+        name: "destinations",
+        component: Destinations,
       },
     ],
   },

@@ -13,6 +13,9 @@ const store = createStore({
     destinations: { loading: false, data: [] },
     tours: { loading: false, data: [] },
     myBookings: { loading: false, data: [] },
+    allBookings: { loading: false, data: [] },
+    allTickets: { loading: false, data: [] },
+    allUsers: { loading: false, data: [] },
     myTicket: { loading: false, data: [] },
     booking: null,
   },
@@ -55,6 +58,32 @@ const store = createStore({
       return axiosClient.get("/my-bookings").then((res) => {
         commit("setMyBookingsLoading", false);
         commit("setMyBookings", res.data);
+        return res;
+      });
+    },
+    getAllBookings({ commit }) {
+      commit("setAllBookingsLoading", true);
+      return axiosClient.get("/bookings").then((res) => {
+        commit("setAllBookingsLoading", false);
+        commit("setAllBookings", res.data);
+        return res;
+      });
+    },
+    getAllTickets({ commit }) {
+      commit("setAllTicketsLoading", true);
+      return axiosClient.get("/get-all-tickets").then((res) => {
+        commit("setAllTicketsLoading", false);
+        commit("setAllTickets", res.data);
+        console.log(res);
+        return res;
+      });
+    },
+    getAllUsers({ commit }) {
+      commit("setAllUsersLoading", true);
+      return axiosClient.get("/users").then((res) => {
+        commit("setAllUsersLoading", false);
+        commit("setAllUsers", res.data);
+        console.log(res);
         return res;
       });
     },
@@ -108,6 +137,13 @@ const store = createStore({
         return res;
       });
     },
+    // update user role action
+    updateUserRole({ commit }, { userId, role }) {
+      return axiosClient.put(`/users/${userId}`, { role }).then((res) => {
+        commit("updateUserRoleInState", { userId, role });
+        return res;
+      });
+    },
   },
   mutations: {
     logout: (state) => {
@@ -136,6 +172,33 @@ const store = createStore({
 
     setMyBookings: (state, myBookings) => {
       state.myBookings = myBookings;
+    },
+
+    // Mutations for All Bookings
+    setAllBookingsLoading: (state, loading) => {
+      state.allBookings.loading = loading;
+    },
+
+    setAllBookings: (state, allBookings) => {
+      state.allBookings = allBookings;
+    },
+
+    // Mutations for All Tickets
+    setAllTicketsLoading: (state, loading) => {
+      state.allTickets.loading = loading;
+    },
+
+    setAllTickets: (state, allTickets) => {
+      state.allTickets = allTickets;
+    },
+
+    // Mutations for All Users
+    setAllUsersLoading: (state, loading) => {
+      state.allUsers.loading = loading;
+    },
+
+    setAllUsers: (state, allUsers) => {
+      state.allUsers = allUsers;
     },
 
     // Mutations for destinations
@@ -178,6 +241,14 @@ const store = createStore({
 
     setMyTicket: (state, myTicket) => {
       state.myTicket = myTicket;
+    },
+
+    // update user role mutation
+    updateUserRoleInState(state, { userId, role }) {
+      const user = state.allUsers.find((u) => u.id === userId);
+      if (user) {
+        user.role = role;
+      }
     },
   },
   modules: {},

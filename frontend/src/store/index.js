@@ -153,12 +153,16 @@ const store = createStore({
       });
     },
 
-    // Create Tour
-    createTour({ commit }, tour) {
-      return axiosClient.post("/tours", tour).then((res) => {
-        commit("addTour", res.data);
-        return res;
-      });
+    async createTour({ dispatch }, formData) {
+      try {
+        await axiosClient.post("/tours", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        dispatch("getTours"); // Reload tours after creating a new one
+      } catch (error) {
+        console.error("Error creating tour:", error);
+        throw error;
+      }
     },
   },
   mutations: {

@@ -10,6 +10,12 @@ import Tours from "../views/Tours.vue";
 import BookingDetailsPage from "../views/tickets/BookingDetailsPage.vue";
 import DownloadTicketPage from "../views/tickets/ViewTicketPage.vue";
 import Bookings from "../views/Bookings.vue";
+import ViewBookings from "../views/admin/bookings/ViewBookings.vue";
+import ViewDestinations from "../views/admin/destinations/ViewDestinations.vue";
+import ViewTickets from "../views/admin/tickets/ViewTickets.vue";
+import ViewTours from "../views/admin/tours/ViewTours.vue";
+import ViewUsers from "../views/admin/users/ViewUsers.vue";
+import AdminLayout from "../layouts/AdminLayout.vue";
 
 const routes = [
   {
@@ -44,6 +50,40 @@ const routes = [
         name: "ticketDetails",
         component: DownloadTicketPage,
         props: true,
+      },
+    ],
+  },
+  {
+    path: "/admin-dashboard",
+    name: "adminDashboard",
+    component: AdminLayout, // Assume this is your admin dashboard component
+    redirect: "/admin-destinations",
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "/admin-tours",
+        name: "adminTours",
+        component: ViewTours,
+      },
+      {
+        path: "/admin-bookings",
+        name: "adminBookings",
+        component: ViewBookings,
+      },
+      {
+        path: "/admin-tickets",
+        name: "adminTickets",
+        component: ViewTickets,
+      },
+      {
+        path: "/admin-destinations",
+        name: "adminDestinations",
+        component: ViewDestinations,
+      },
+      {
+        path: "/admin-users",
+        name: "adminUsers",
+        component: ViewUsers,
       },
     ],
   },

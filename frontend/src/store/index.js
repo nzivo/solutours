@@ -144,6 +144,22 @@ const store = createStore({
         return res;
       });
     },
+
+    // Create Destination
+    createDestination({ commit }, destination) {
+      return axiosClient.post("/destinations", destination).then((res) => {
+        commit("addDestination", res.data);
+        return res;
+      });
+    },
+
+    // Create Tour
+    createTour({ commit }, tour) {
+      return axiosClient.post("/tours", tour).then((res) => {
+        commit("addTour", res.data);
+        return res;
+      });
+    },
   },
   mutations: {
     logout: (state) => {
@@ -249,6 +265,16 @@ const store = createStore({
       if (user) {
         user.role = role;
       }
+    },
+
+    // Create Destination
+    addDestination: (state, destination) => {
+      state.destinations.push(destination);
+    },
+
+    // Create tour
+    addTour: (state, tour) => {
+      state.tours.push(tour);
     },
   },
   modules: {},

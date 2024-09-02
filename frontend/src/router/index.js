@@ -119,9 +119,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !store.state.user.token) {
+  const isAuthenticated = !!store.state.user.token;
+  const isAdmin = store.state.user.role === "admin";
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
     next({ name: "login" });
-  } else if (store.state.user.token && to.meta.isGuest) {
+  } else if (to.meta.isGuest && isAuthenticated) {
+    if (isAdmin) {
+      next({ name: "adminDashboard" });
+    } else {
+      next({ name: "tours" });
+    }
+  } else if (to.meta.isAdmin && !isAdmin) {
     next({ name: "tours" });
   } else {
     next();

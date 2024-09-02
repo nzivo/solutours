@@ -116,13 +116,21 @@ const createDestination = () => {
   store
     .dispatch("createDestination", form.value)
     .then(() => {
-      toast.success("Destination created successfully!");
+      toast.success("Destination created successfully!", {
+        theme: "auto",
+        type: "success",
+        position: "bottom-center",
+      });
       form.value = { name: "", slug: "", description: "" }; // Reset form
       showForm.value = false; // Hide form
       store.dispatch("getDestinations"); // Reload destinations
     })
     .catch((error) => {
-      toast.error("Failed to create destination.");
+      toast.error("Failed to create destination.", {
+        theme: "auto",
+        type: "error",
+        position: "bottom-center",
+      });
       console.error(error);
     });
 };

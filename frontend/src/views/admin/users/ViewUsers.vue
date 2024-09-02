@@ -82,10 +82,18 @@ const updateUserRole = (userId, role) => {
   store
     .dispatch("updateUserRole", { userId, role })
     .then(() => {
-      toast.success(`User role updated to ${role}`);
+      toast.success(`User role updated to ${role}`, {
+        theme: "auto",
+        type: "success",
+        position: "bottom-center",
+      });
     })
     .catch(() => {
-      toast.error("Failed to update user role");
+      toast.error("Failed to update user role", {
+        theme: "auto",
+        type: "error",
+        position: "bottom-center",
+      });
     });
 };
 </script>

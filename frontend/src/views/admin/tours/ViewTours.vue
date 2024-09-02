@@ -251,7 +251,11 @@ const createTour = () => {
   store
     .dispatch("createTour", formData)
     .then(() => {
-      toast.success("Tour created successfully!");
+      toast.success("Tour created successfully!", {
+        theme: "auto",
+        type: "success",
+        position: "bottom-center",
+      });
       form.value = {
         destination_id: "",
         name: "",
@@ -264,7 +268,11 @@ const createTour = () => {
       store.dispatch("getTours"); // Reload tours
     })
     .catch((error) => {
-      toast.error("Failed to create tour.");
+      toast.error("Failed to create tour.", {
+        theme: "auto",
+        type: "error",
+        position: "bottom-center",
+      });
       console.error(error);
     });
 };

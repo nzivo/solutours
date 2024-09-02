@@ -3,14 +3,20 @@
     <Disclosure as="nav" class="bg-gray-100" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
-          <div class="flex items-center">
-            <!-- SVG Image -->
-            <div class="flex-shrink-0">
-              <img class="h-8 w-8" src="/public/vite.svg" alt="Your Company" />
-            </div>
-            <!-- Text Next to Image -->
-            <span class="ml-2 text-[26px] font-bold">Solutours</span>
-          </div>
+          <router-link :to="{ name: 'home' }">
+            <div class="flex items-center">
+              <!-- SVG Image -->
+              <div class="flex-shrink-0">
+                <img
+                  class="h-8 w-8"
+                  src="/public/vite.svg"
+                  alt="Your Company"
+                />
+              </div>
+              <!-- Text Next to Image -->
+              <span class="ml-2 text-[26px] font-bold">Solutours</span>
+            </div></router-link
+          >
 
           <!-- md links -->
           <div class="hidden md:block">

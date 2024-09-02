@@ -124,9 +124,7 @@ const bookTour = (tourId) => {
   store
     .dispatch("bookTour", tourId)
     .then((response) => {
-      const bookingId = response.booking_id; // Assuming the response contains booking_id
-      // Redirect to booking details page with both tourId and bookingId
-      console.log("Booking successful, redirecting to booking details page.");
+      const bookingId = response.booking_id;
       router.push({ path: `/booking/${tourId}/${bookingId}` });
     })
     .catch((error) => {

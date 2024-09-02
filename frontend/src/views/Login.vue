@@ -112,11 +112,11 @@ export default {
       loading.value = true;
       store
         .dispatch("login", user.value)
-        .then(() => {
+        .then((response) => {
           loading.value = false;
 
           // Check the user's role and redirect accordingly
-          const userRole = store.state.user.role;
+          const userRole = response.user.role;
           if (userRole === "admin") {
             router.push({ name: "adminDashboard" });
           } else {

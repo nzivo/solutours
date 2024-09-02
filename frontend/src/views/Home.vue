@@ -103,8 +103,15 @@
         >
           <!-- Rounded Image -->
           <img
-            src="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTE2MjI1MjI0NDQ0MzYzMjM4Mg%3D%3D/original/ae3426d1-fba4-44d4-bed2-690426f25f7a.jpeg?im_w=1440&im_q=highq"
-            alt="Tour Image"
+            v-if="tour.image"
+            :src="`http://localhost:8000/${tour.image}`"
+            :alt="tour.name"
+            class="w-full h-[300px] object-cover rounded-md"
+          />
+          <img
+            v-else
+            src="/public/vite.svg"
+            :alt="tour.name"
             class="w-full h-[300px] object-cover rounded-md"
           />
 

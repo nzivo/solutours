@@ -14,7 +14,8 @@ class Tours extends Model
         'name',
         'description',
         'price',
-        'slots'
+        'slots',
+        'image'
     ];
 
     public function destination()
